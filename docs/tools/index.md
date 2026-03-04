@@ -46,6 +46,14 @@ Microsoft's SDK for integrating LLMs into enterprise applications, with strong s
 
 ---
 
+### [VS Code AgentBuilder](agentbuilder.md)
+
+A visual agent builder built into the AI Toolkit for VS Code. Build, test, and iterate on agents through a guided UI with multi-model support, a chat playground, and MCP integration — all without leaving your editor.  
+**Best for:** Rapid prototyping, experimenting with models, VS Code-centric teams  
+**Languages:** Any (model-driven; generates Python code)
+
+---
+
 ## How to Choose
 
 | Need | Recommended Tool |
@@ -55,5 +63,6 @@ Microsoft's SDK for integrating LLMs into enterprise applications, with strong s
 | Automate tasks with multiple AI agents | AutoGen or CrewAI |
 | Integrate AI into an enterprise .NET app | Semantic Kernel |
 | Research and experiment quickly | LangChain |
+| Prototype an agent visually in VS Code | VS Code AgentBuilder |
 
 See the [detailed comparison guide](../guides/comparison.md) for more information.

@@ -26,6 +26,7 @@ AI Agents are autonomous systems that use large language models (LLMs) to reason
 | [AutoGen](tools/autogen.md) | Multi-agent conversation systems | Python |
 | [CrewAI](tools/crewai.md) | Role-based multi-agent orchestration | Python |
 | [Semantic Kernel](tools/semantic-kernel.md) | Enterprise AI orchestration | Python / C# / Java |
+| [VS Code AgentBuilder](tools/agentbuilder.md) | Visual agent builder inside VS Code | Any |
 
 ---
 
