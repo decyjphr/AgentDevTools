@@ -1,5 +1,17 @@
 name: Deploy Documentation
 
+# Deploys MkDocs Material site to GitHub Pages via GitHub Actions.
+#
+# Why MkDocs and not Jekyll:
+#  - Content uses MkDocs Material extensions (admonitions, tabbed blocks,
+#    syntax highlighting) that are incompatible with Jekyll out of the box.
+#  - MkDocs Material provides a richer documentation UX (dark/light mode,
+#    instant search, navigation tabs) without additional Jekyll plugins.
+#  - Since GitHub Pages source is set to "GitHub Actions", Jekyll's only
+#    advantage (zero-config branch builds) does not apply here.
+#
+# Required repo setting: Settings → Pages → Source = "GitHub Actions"
+
 on:
   push:
     branches:
@@ -8,10 +20,9 @@ on:
     branches:
       - main
 
+# Minimal default permissions; deploy job gets elevated rights it needs only.
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: "pages"
@@ -47,6 +58,9 @@ jobs:
     if: github.ref == 'refs/heads/main'
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
