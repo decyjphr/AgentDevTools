@@ -1,0 +1,70 @@
+name: Deploy Documentation
+
+# Deploys MkDocs Material site to GitHub Pages via GitHub Actions.
+#
+# Why MkDocs and not Jekyll:
+#  - Content uses MkDocs Material extensions (admonitions, tabbed blocks,
+#    syntax highlighting) that are incompatible with Jekyll out of the box.
+#  - MkDocs Material provides a richer documentation UX (dark/light mode,
+#    instant search, navigation tabs) without additional Jekyll plugins.
+#  - Since GitHub Pages source is set to "GitHub Actions", Jekyll's only
+#    advantage (zero-config branch builds) does not apply here.
+#
+# Required repo setting: Settings → Pages → Source = "GitHub Actions"
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+# Minimal default permissions; deploy job gets elevated rights it needs only.
+permissions:
+  contents: read
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install mkdocs-material
+
+      - name: Build documentation
+        run: mkdocs build --strict
+
+      - name: Upload Pages artifact
+        if: github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

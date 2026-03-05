@@ -1,0 +1,69 @@
+site_name: AgentDevTools
+site_description: Documentation for tools used in building AI Agents
+site_url: https://decyjphr.github.io/AgentDevTools/
+repo_name: decyjphr/AgentDevTools
+repo_url: https://github.com/decyjphr/AgentDevTools
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: deep purple
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: deep purple
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.annotate
+    - content.tabs.link
+    - content.code.copy
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+
+nav:
+  - Home: index.md
+  - Getting Started: getting-started.md
+  - Tools:
+      - Overview: tools/index.md
+      - LangChain: tools/langchain.md
+      - LlamaIndex: tools/llamaindex.md
+      - AutoGen: tools/autogen.md
+      - CrewAI: tools/crewai.md
+      - Semantic Kernel: tools/semantic-kernel.md
+      - VS Code Agent Builder: tools/agentbuilder.md
+  - Guides:
+      - Tool Comparison: guides/comparison.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/decyjphr/AgentDevTools
