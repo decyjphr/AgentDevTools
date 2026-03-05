@@ -59,7 +59,7 @@ nav:
       - AutoGen: tools/autogen.md
       - CrewAI: tools/crewai.md
       - Semantic Kernel: tools/semantic-kernel.md
-      - VS Code AgentBuilder: tools/agentbuilder.md
+      - VS Code Agent Builder: tools/agentbuilder.md
   - Guides:
       - Tool Comparison: guides/comparison.md
 

@@ -1,25 +1,25 @@
-# VS Code AgentBuilder
+# VS Code Agent Builder
 
-**AgentBuilder** is a feature of the **AI Toolkit for Visual Studio Code** that lets you build, test, and iterate on AI agents directly inside your editor. It provides a visual, no-code-first interface for prototyping agents backed by a wide range of models — including GitHub Models, Azure AI Foundry, Ollama (local), and more — without leaving VS Code.
+**Agent Builder** (previously known as *Prompt Builder*) is a feature of the **AI Toolkit for Visual Studio Code** that streamlines the engineering workflow for building agents, including prompt engineering and integration with tools such as MCP servers. It lets you iterate on prompts in real-time and generates production-ready code for seamless LLM integration via APIs — all without leaving VS Code.
 
 - **Documentation:** [code.visualstudio.com/docs/intelligentapps/agentbuilder](https://code.visualstudio.com/docs/intelligentapps/agentbuilder)
 - **Extension:** [AI Toolkit for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=ms-windows-ai-studio.windows-ai-studio)
 - **GitHub:** [github.com/microsoft/vscode-ai-toolkit](https://github.com/microsoft/vscode-ai-toolkit)
 - **Languages:** Works with any language; agent logic is model-driven
-- **License:** MIT (extension is free)
+- **License:** Free extension (MIT)
 
 ---
 
 ## Key Features
 
-- **Visual Agent Builder** – Create and configure agents through a guided UI inside VS Code
-- **Multi-Model Support** – Connect to GitHub Models, Azure OpenAI, OpenAI, Anthropic, Google Gemini, Ollama (local), and more
+- **Prompt Engineering** – Iterate and refine agent instructions in real-time with live model feedback
+- **Variables in Instructions** – Use `{{variable_name}}` syntax to parameterize prompts dynamically
+- **Multi-Model Support** – Connect to GitHub Models, Azure AI Foundry, OpenAI, Anthropic, Google Gemini, Ollama (local), and more
 - **Integrated Chat Playground** – Test your agent interactively in a built-in chat panel
-- **Tool / Function Calling** – Attach tools (web search, code execution, custom functions) to your agent
-- **System Prompt Editor** – Craft and iterate on system prompts with real-time feedback
-- **MCP Support** – Connect to Model Context Protocol (MCP) servers for extended tool capabilities
-- **Agent Templates** – Start from built-in templates for common agent patterns
-- **Export to Code** – Generate runnable Python code from your agent configuration
+- **MCP Integration** – Browse featured servers, connect to existing MCP servers, or scaffold a brand-new MCP server (Python or TypeScript)
+- **Function Calling** – Attach custom tools defined by JSON schema to your agent
+- **Evaluation Tab** – Test function-calling tools with mock responses across multiple test cases
+- **Export to Code** – Generate runnable Python code from your agent; choose between Agent Framework SDK or a provider-specific SDK (OpenAI, Mistral, etc.)
 
 ---
 
@@ -27,7 +27,9 @@
 
 ### Prerequisites
 
-- [Visual Studio Code](https://code.visualstudio.com/) 1.90 or later
+- [Visual Studio Code](https://code.visualstudio.com/) — latest version recommended
+- For MCP servers using Node.js: [Node.js](https://nodejs.org/) and `npx` (`npm install -g npx`)
+- For MCP servers using Python: [Python](https://www.python.org/) and [`uv`](https://docs.astral.sh/uv/getting-started/installation/)
 
 ### Install the AI Toolkit Extension
 
@@ -46,67 +48,46 @@ code --install-extension ms-windows-ai-studio.windows-ai-studio
 
 ## Getting Started
 
-### 1. Open AgentBuilder
+### 1. Open Agent Builder
 
-In VS Code, open the **AI Toolkit** panel from the Activity Bar (robot icon), then select **AgentBuilder**.
+You can access Agent Builder in any of these ways:
 
-### 2. Create a New Agent
+- In the **AI Toolkit** view in the Activity Bar, select **Agent Builder**
+- Select **Try in Agent Builder** from a model card in the model catalog
+- In the **My Resources** view under **Models**, right-click a model and choose **Load in Agent Builder**
 
-Click **New Agent** and fill in:
+### 2. Configure Your Agent
 
-| Field | Description |
-|-------|-------------|
-| **Name** | A descriptive name for your agent |
-| **Model** | The LLM to power the agent (e.g., `gpt-4o`, `claude-3-5-sonnet`) |
-| **System Prompt** | Instructions that define the agent's persona and behavior |
-| **Tools** | (Optional) Functions or MCP servers the agent can call |
+Select a model from the **Model** dropdown (or select **Browse models** to add one from the catalog), then fill in the **Instructions** field to tell the agent what to do and how to behave.
 
-### 3. Test in the Playground
+**Using variables in instructions:**
 
-Use the integrated **Chat Playground** to send messages to your agent and observe how it responds. Adjust the system prompt and tools iteratively without writing any code.
+Use `{{variable_name}}` to add dynamic values. For example:
+
+```
+Greet the user by their name: {{user_name}}
+```
+
+Then provide the value for `user_name` in the **Variables** section.
+
+### 3. Test in the Chat Playground
+
+Enter a prompt in the text box and select the send icon to test your agent. Observe the model response and iterate on your instructions until the agent behaves as expected.
 
 ### 4. Export to Code
 
-When you are satisfied with your agent configuration, click **Generate Code** to export a runnable Python script that implements your agent using the AI Toolkit SDK.
+Select **View Code** to generate a runnable Python snippet from your agent configuration. For models hosted on GitHub, you can choose the inference SDK:
+
+- **Agent Framework SDK** ([github.com/microsoft/agent-framework](https://github.com/microsoft/agent-framework))
+- A provider-specific SDK (OpenAI SDK, Mistral API, etc.)
+
+Copy the generated snippet directly into your application.
 
 ---
 
 ## Example: Exported Python Agent
 
-The following is an example of Python code generated by AgentBuilder:
-
-```python
-import os
-from azure.ai.inference import ChatCompletionsClient
-from azure.ai.inference.models import SystemMessage, UserMessage
-from azure.core.credentials import AzureKeyCredential
-
-# Agent configuration exported from VS Code AgentBuilder
-SYSTEM_PROMPT = """You are a helpful AI assistant specializing in developer tools.
-You provide clear, concise answers with code examples where relevant."""
-
-client = ChatCompletionsClient(
-    endpoint=os.environ["AZURE_AI_ENDPOINT"],
-    credential=AzureKeyCredential(os.environ["AZURE_AI_KEY"]),
-)
-
-def chat(user_message: str) -> str:
-    response = client.complete(
-        messages=[
-            SystemMessage(content=SYSTEM_PROMPT),
-            UserMessage(content=user_message),
-        ],
-        model="gpt-4o",
-        temperature=0.7,
-        max_tokens=1024,
-    )
-    return response.choices[0].message.content
-
-if __name__ == "__main__":
-    print(chat("What are the best tools for building AI agents?"))
-```
-
-### Using GitHub Models (free tier)
+The following is a representative example of Python code generated by Agent Builder for a GitHub-hosted model:
 
 ```python
 import os
@@ -115,17 +96,22 @@ from azure.ai.inference.models import SystemMessage, UserMessage
 from azure.core.credentials import AzureKeyCredential
 
 # GitHub Models endpoint — free for GitHub users
+# Generate a personal access token at https://github.com/settings/tokens
 client = ChatCompletionsClient(
     endpoint="https://models.inference.ai.azure.com",
     credential=AzureKeyCredential(os.environ["GITHUB_TOKEN"]),
 )
 
+SYSTEM_PROMPT = "You are a helpful AI assistant specializing in developer tools."
+
 response = client.complete(
     messages=[
-        SystemMessage(content="You are a helpful coding assistant."),
-        UserMessage(content="Explain what an AI agent is in one paragraph."),
+        SystemMessage(content=SYSTEM_PROMPT),
+        UserMessage(content="What are the best tools for building AI agents?"),
     ],
     model="gpt-4o",
+    temperature=0.7,
+    max_tokens=1024,
 )
 print(response.choices[0].message.content)
 ```
@@ -136,36 +122,76 @@ print(response.choices[0].message.content)
 
 | Provider | Models Available | Setup Required |
 |----------|-----------------|----------------|
-| GitHub Models | GPT-4o, Claude 3.5, Llama 3.x, Mistral, Phi-4, and more | GitHub account |
+| GitHub Models | GPT-4o, Claude 3.5, Llama 3.x, Mistral, Phi-4, and more | GitHub personal access token |
 | Azure AI Foundry | GPT-4o, o1, Claude, Llama, Phi, and more | Azure subscription |
 | OpenAI | GPT-4o, o1, GPT-4 Turbo | OpenAI API key |
 | Anthropic | Claude 3.5 Sonnet/Haiku | Anthropic API key |
 | Google | Gemini 1.5 Pro/Flash | Google AI API key |
-| Ollama | Llama, Mistral, Phi, Gemma, and more | Local install |
+| Ollama | Llama, Mistral, Phi, Gemma, and more | Local Ollama install |
 
 ---
 
 ## MCP (Model Context Protocol) Integration
 
-AgentBuilder supports connecting to **MCP servers**, which provide standardized tool interfaces:
+Agent Builder provides full MCP support: you can browse featured servers, connect to existing ones, or build a new server from scratch.
 
-1. In AgentBuilder, open the **Tools** section of your agent
-2. Click **Add MCP Server**
-3. Enter the server URL or select from installed servers
-4. The agent can now call tools exposed by the MCP server
+### Use a featured MCP server
 
-This allows agents to access file systems, databases, APIs, and other resources through a standardized protocol.
+1. In the **Tool** section, select **+ MCP Server**, then select **MCP Server** in the Quick Pick
+2. Select **Could not find one? Browse more MCP servers** from the dropdown
+3. Choose an MCP server from the list — it is added automatically in the **MCP** subsection under **Tools**
+
+### Use VS Code tools as MCP
+
+1. In the **Tool** section, select **+ MCP Server → MCP Server**
+2. Select **Use Tools Added in Visual Studio Code**
+3. Pick the tools you want — a `VSCode Tools` MCP Server is added in the **MCP** subsection under **Tools**
+
+### Connect to an existing MCP server
+
+1. Select **+ MCP Server → MCP Server → Connect to an Existing MCP Server**
+2. Choose a connection type:
+   - **Command (stdio)** – run a local command that implements the MCP protocol
+   - **HTTP (HTTP or server-sent events)** – connect to a remote MCP-compatible server
+3. Select the tools from the server you want to enable, then test with a prompt
+
+### Build a new MCP server from scaffold
+
+1. In the **MCP Workflow** section, select **Create New MCP Server**
+2. Choose **Python** or **TypeScript**
+3. Select a folder and enter a project name
+
+To test the new server:
+
+1. Open the VS Code Debug panel and press `F5` (or select **Debug in Agent Builder**) — the server starts and connects to Agent Builder automatically
+2. Send a prompt such as `"What is the weather in Seattle?"` to exercise the server's tools
 
 ---
 
-## When to Use AgentBuilder
+## Function Calling
 
-✅ Rapid prototyping of agents without writing boilerplate code  
+Function calling lets your agent connect to external APIs and services via a custom JSON schema.
+
+1. In **Tool**, select **Add Tool → Custom Tool**
+2. Choose how to define the schema:
+   - **By Example** – paste a JSON example and the schema is inferred
+   - **Upload Existing Schema** – upload a JSON schema file
+3. Enter a tool name and description, then select **Add**
+4. Provide a **mock response** in the tool card for testing purposes
+5. Run the agent — it will call the tool as appropriate
+
+In the **Evaluation** tab, you can run the agent across multiple test cases and provide different mock responses per case to verify function-calling behavior.
+
+---
+
+## When to Use Agent Builder
+
+✅ Rapid prototyping — iterate on instructions without writing boilerplate code  
 ✅ Experimenting with different models and prompts side-by-side  
 ✅ Teams that work primarily in VS Code  
 ✅ Getting started with AI agents — minimal setup required  
-✅ Testing agents with GitHub Models for free before committing to a paid provider  
-✅ Developers who want a visual tool before moving to code  
+✅ Testing with GitHub Models for free before committing to a paid provider  
+✅ Building and testing custom MCP servers with live debug integration  
 
 ⚠️ For production-grade, code-first agent pipelines with full control, consider [LangChain](langchain.md), [LlamaIndex](llamaindex.md), or [Semantic Kernel](semantic-kernel.md).
 
@@ -173,8 +199,9 @@ This allows agents to access file systems, databases, APIs, and other resources 
 
 ## Further Reading
 
-- [AgentBuilder Documentation](https://code.visualstudio.com/docs/intelligentapps/agentbuilder)
-- [AI Toolkit for VS Code](https://code.visualstudio.com/docs/intelligentapps/overview)
+- [Agent Builder Documentation](https://code.visualstudio.com/docs/intelligentapps/agentbuilder)
+- [AI Toolkit for VS Code — Overview](https://code.visualstudio.com/docs/intelligentapps/overview)
+- [Model Evaluation](https://code.visualstudio.com/docs/intelligentapps/evaluation)
 - [AI Toolkit GitHub Repository](https://github.com/microsoft/vscode-ai-toolkit)
 - [GitHub Models (free LLM access)](https://github.com/marketplace/models)
 - [Model Context Protocol (MCP)](https://modelcontextprotocol.io)

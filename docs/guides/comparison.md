@@ -6,7 +6,7 @@ This guide provides a side-by-side comparison of the major AI agent frameworks t
 
 ## Feature Comparison
 
-| Feature | LangChain | LlamaIndex | AutoGen | CrewAI | Semantic Kernel | AgentBuilder |
+| Feature | LangChain | LlamaIndex | AutoGen | CrewAI | Semantic Kernel | Agent Builder |
 |---------|-----------|------------|---------|--------|-----------------|--------------|
 | **Primary Use Case** | General-purpose chains & agents | RAG & data-augmented apps | Multi-agent conversations | Role-based agent teams | Enterprise LLM integration | Visual agent prototyping in VS Code |
 | **Multi-Agent Support** | ✅ (LangGraph) | ⚠️ Limited | ✅ Native | ✅ Native | ✅ (Process Framework) | ⚠️ Single agent |
@@ -38,7 +38,7 @@ This guide provides a side-by-side comparison of the major AI agent frameworks t
 | Research & experimentation | LangChain | LlamaIndex |
 | Production RAG at scale | LlamaIndex | LangChain |
 | Debate / peer review agents | AutoGen | CrewAI |
-| Visual agent prototyping | VS Code AgentBuilder | LangChain |
+| Visual agent prototyping | VS Code Agent Builder | LangChain |
 
 ---
 
@@ -51,7 +51,7 @@ This guide provides a side-by-side comparison of the major AI agent frameworks t
 | Research / academic team | AutoGen |
 | Content/marketing automation | CrewAI |
 | Full-stack JavaScript team | LangChain (JS) or LlamaIndex (TS) |
-| VS Code developer exploring AI | VS Code AgentBuilder |
+| VS Code developer exploring AI | VS Code Agent Builder |
 
 ---
 
@@ -64,7 +64,7 @@ This guide provides a side-by-side comparison of the major AI agent frameworks t
 | AutoGen | High (multi-turn) | Moderate | ✅ Growing adoption |
 | CrewAI | Medium | Moderate | ⚠️ Maturing |
 | Semantic Kernel | Low | Good | ✅ Enterprise-grade |
-| AgentBuilder | Low (interactive) | N/A | ✅ Prototyping tool |
+| Agent Builder | Low (interactive) | N/A | ✅ Prototyping tool |
 
 ---
 
@@ -77,7 +77,7 @@ This guide provides a side-by-side comparison of the major AI agent frameworks t
 | AutoGen | 15+ | Basic | Limited | Custom |
 | CrewAI | Via LangChain | Via LangChain | Via tools | Custom |
 | Semantic Kernel | 10+ | Azure + others | Via plugins | Azure |
-| AgentBuilder | GitHub Models, Azure, OpenAI, Anthropic, Google, Ollama | N/A | Via MCP | VS Code (exports code) |
+| Agent Builder | GitHub Models, Azure, OpenAI, Anthropic, Google, Ollama | N/A | Via MCP | VS Code (exports code) |
 
 ---
 
@@ -104,8 +104,8 @@ This guide provides a side-by-side comparison of the major AI agent frameworks t
     is the Microsoft-official recommendation.
 
 !!! tip "Want to prototype an agent quickly inside VS Code?"
-    Use **VS Code AgentBuilder** — it requires zero boilerplate, supports
-    GitHub Models (free), and lets you iterate on system prompts and tools
+    Use **VS Code Agent Builder** — it requires zero boilerplate, supports
+    GitHub Models (free), and lets you iterate on instructions and tools
     interactively before committing to code.
 
 ---
@@ -130,4 +130,4 @@ These frameworks are not mutually exclusive. Common combinations:
 | Autonomous code agents | AutoGen |
 | Role-based team agents | CrewAI |
 | Enterprise Microsoft stack | Semantic Kernel |
-| Visual prototyping in VS Code | VS Code AgentBuilder |
+| Visual prototyping in VS Code | VS Code Agent Builder |
